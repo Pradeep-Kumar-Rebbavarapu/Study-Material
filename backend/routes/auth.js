@@ -13,6 +13,7 @@ router.post("/google", async (req, res) => {
     const CLIENT_ID = data.clientId
     const idToken = data.credential
     const client = new OAuth2Client(CLIENT_ID);
+    
     async function verify() {
       const ticket = await client.verifyIdToken({
         idToken: idToken,
@@ -30,9 +31,14 @@ router.post("/google", async (req, res) => {
       );
       user.lastLogin = Date.now();
       await user.save();
+      return token
     }
-    verify().catch(console.error);
-    res.status(200).send("verified");
+    verify().then((response)=>{
+      res.status(200).send(response)
+    }).catch((error)=>{
+      res.status(201).send(error);
+    });
+    
   } catch (error) {
     res.status(401).send({ message: error });
   }

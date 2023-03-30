@@ -19,9 +19,9 @@ function Login() {
       }
       }).then((response)=>{
         console.log(response.data);
-      // const { token } = response.data;
-      // setToken(token);
-      // navigate("/register");
+      const { token } = response.data;
+      setToken(token);
+      navigate("/register");
       }).catch((error)=>{
         console.log(error);
       })
